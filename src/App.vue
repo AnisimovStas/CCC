@@ -5,7 +5,6 @@ const counter = ref(0);
 const currency1 = ref("");
 const currency2 = ref("");
 const currencyStore = ref([]);
-const test = ref("test");
 
 async function addToStore() {
   const currentCurrencyToStore = {
@@ -31,7 +30,6 @@ function updateCurrencyPrices(currencyName1, currencyName2) {
       `https://min-api.cryptocompare.com/data/price?fsym=${currencyName1}&tsyms=${currencyName2}`
     );
     const price = await f.json();
-    this.test = price;
     this.currencyStore.find(
       (currency) =>
         currency.name1 === currencyName1 && currency.name2 === currencyName2
@@ -46,7 +44,6 @@ function updateCurrencyPrices(currencyName1, currencyName2) {
   <div class="container bg-slate-300">
     <header class="bg-red-500 flex flex-col text-white">
       <h1>Custom Crypto Currency</h1>
-      {{ test }}
       <label>currency 1 </label
       ><input class="text-black" v-model="currency1" />
       <label>currency 2 </label
