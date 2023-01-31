@@ -26,18 +26,12 @@ function deleteFromStore(currencyToRemove) {
   );
 }
 function updateCurrencyPrices(currencyName1, currencyName2) {
-  setInterval(async () => {
-    const tsyms = currencyName2;
-    const f = await fetch(
-      `https://min-api.cryptocompare.com/data/price?fsym=${currencyName1}&tsyms=${currencyName2}`
-    );
-    const price = await f.json();
-    this.test = price;
-    this.currencyStore.find(
-      (currency) =>
-        currency.name1 === currencyName1 && currency.name2 === currencyName2
-    ).price = price.tsyms;
-  }, 5000);
+  fetchPrice(currencyName1, currencyName2);
+  this.test = price;
+  this.currencyStore.find(
+    (currency) =>
+      currency.name1 === currencyName1 && currency.name2 === currencyName2
+  ).price = price.tsyms;
   this.currency1 = "";
   this.currency2 = "";
 }
