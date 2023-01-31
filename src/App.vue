@@ -26,12 +26,17 @@ function deleteFromStore(currencyToRemove) {
   );
 }
 function updateCurrencyPrices(currencyName1, currencyName2) {
-  fetchPrice(currencyName1, currencyName2);
-  this.test = price;
-  this.currencyStore.find(
-    (currency) =>
-      currency.name1 === currencyName1 && currency.name2 === currencyName2
-  ).price = price.tsyms;
+  setInterval(async () => {
+    const f = await fetch(
+      `https://min-api.cryptocompare.com/data/price?fsym=${currencyName1}&tsyms=${currencyName2}`
+    );
+    const price = await f.json();
+    this.test = price;
+    this.currencyStore.find(
+      (currency) =>
+        currency.name1 === currencyName1 && currency.name2 === currencyName2
+    ).price = price[currencyName2];
+  }, 5000);
   this.currency1 = "";
   this.currency2 = "";
 }
@@ -60,7 +65,11 @@ function updateCurrencyPrices(currencyName1, currencyName2) {
           <div class="w-16">Price</div>
         </div>
 
-        <div class="flex flex-row space-x-2" v-for="currency in currencyStore">
+        <div
+          class="flex flex-row space-x-2"
+          v-for="currency in currencyStore"
+          :key="currency"
+        >
           <div class="w-16">{{ currency.name1 }}</div>
           <div class="w-16">{{ currency.name2 }}</div>
           <div class="w-16">{{ currency.price }}</div>
