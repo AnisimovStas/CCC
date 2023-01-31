@@ -15,3 +15,5 @@ export function updateCurrencyPrices(currencyName1, currencyName2) {
   this.currency1 = "";
   this.currency2 = "";
 }
+
+export function loadCurrencyList() {}

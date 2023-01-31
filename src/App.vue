@@ -7,6 +7,12 @@ const currency2 = ref("");
 const currencyStore = ref([]);
 const snapshots = ref([]);
 
+function normalizedDate() {
+  const date = new Date();
+  const options = { year: "numeric", month: "numeric", day: "numeric" };
+  const normalizedDate = date.toLocaleDateString(undefined, options);
+  return normalizedDate;
+}
 async function addToStore() {
   const currentCurrencyToStore = {
     name1: this.currency1.toUpperCase(),
@@ -24,12 +30,17 @@ function deleteFromStore(currencyToRemove) {
     (currency) => currency != currencyToRemove
   );
 }
+function deleteSnapshot(snapshotToRemove) {
+  this.snapshots = this.snapshots.filter(
+    (snapshot) => snapshot != snapshotToRemove
+  );
+}
 function snapshot(currencyToSnapshot) {
   const snapshotedCurrency = {
     name1: currencyToSnapshot.name1,
     name2: currencyToSnapshot.name2,
-    price: currencyToSnapshot.price.toString(),
-    date: Date.now().toString(),
+    price: currencyToSnapshot.price,
+    date: normalizedDate(),
   };
   this.snapshots = [...this.snapshots, snapshotedCurrency];
 }
@@ -72,14 +83,15 @@ function filtredSnapshots(currency) {
           <div class="w-16 border-2">{{ currency.name2 }}</div>
           <div class="w-16 border-2">{{ currency.price }}</div>
           <div
-            class="w-32 border-2"
+            class="w-32 border-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-red-600 duration-300"
             v-for="snap in filtredSnapshots(currency)"
             :key="snap"
+            @click="deleteSnapshot(snap)"
           >
             Price: {{ snap.price }} date: {{ snap.date }}
           </div>
           <button @click.stop="snapshot(currency)" class="w-16">
-            snapshot
+            take snapshot
           </button>
           <button @click.stop="deleteFromStore(currency)" class="w-16">
             delete
