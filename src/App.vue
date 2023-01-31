@@ -83,12 +83,13 @@ function filtredSnapshots(currency) {
           <div class="w-16 border-2">{{ currency.name2 }}</div>
           <div class="w-16 border-2">{{ currency.price }}</div>
           <div
-            class="w-32 border-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-red-600 duration-300"
+            class="flex-col w-32 border-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-red-600 duration-300"
             v-for="snap in filtredSnapshots(currency)"
             :key="snap"
             @click="deleteSnapshot(snap)"
           >
-            Price: {{ snap.price }} date: {{ snap.date }}
+            <p>Price: {{ snap.price }}</p>
+            <p>date: {{ snap.date }}</p>
           </div>
           <button @click.stop="snapshot(currency)" class="w-16">
             take snapshot
