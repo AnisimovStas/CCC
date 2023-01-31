@@ -1,10 +1,11 @@
 <script setup>
 import { reactive, ref } from "vue";
-import { fetchPrice } from "./api.js";
+import { updateCurrencyPrices } from "./api.js";
 const counter = ref(0);
 const currency1 = ref("");
 const currency2 = ref("");
 const currencyStore = ref([]);
+const snapshots = ref([]);
 
 async function addToStore() {
   const currentCurrencyToStore = {
@@ -13,7 +14,6 @@ async function addToStore() {
     price: "-",
   };
   this.currencyStore = [...this.currencyStore, currentCurrencyToStore];
-
   this.updateCurrencyPrices(
     currentCurrencyToStore.name1,
     currentCurrencyToStore.name2
@@ -24,19 +24,20 @@ function deleteFromStore(currencyToRemove) {
     (currency) => currency != currencyToRemove
   );
 }
-function updateCurrencyPrices(currencyName1, currencyName2) {
-  setInterval(async () => {
-    const f = await fetch(
-      `https://min-api.cryptocompare.com/data/price?fsym=${currencyName1}&tsyms=${currencyName2}`
-    );
-    const price = await f.json();
-    this.currencyStore.find(
-      (currency) =>
-        currency.name1 === currencyName1 && currency.name2 === currencyName2
-    ).price = price[currencyName2];
-  }, 5000);
-  this.currency1 = "";
-  this.currency2 = "";
+function snapshot(currencyToSnapshot) {
+  const snapshotedCurrency = {
+    name1: currencyToSnapshot.name1,
+    name2: currencyToSnapshot.name2,
+    price: currencyToSnapshot.price.toString(),
+    date: Date.now().toString(),
+  };
+  this.snapshots = [...this.snapshots, snapshotedCurrency];
+}
+function filtredSnapshots(currency) {
+  return this.snapshots.filter(
+    (snapshoted) =>
+      snapshoted.name1 == currency.name1 && snapshoted.name2 == currency.name2
+  );
 }
 </script>
 
@@ -67,9 +68,19 @@ function updateCurrencyPrices(currencyName1, currencyName2) {
           v-for="currency in currencyStore"
           :key="currency"
         >
-          <div class="w-16">{{ currency.name1 }}</div>
-          <div class="w-16">{{ currency.name2 }}</div>
-          <div class="w-16">{{ currency.price }}</div>
+          <div class="w-16 border-2">{{ currency.name1 }}</div>
+          <div class="w-16 border-2">{{ currency.name2 }}</div>
+          <div class="w-16 border-2">{{ currency.price }}</div>
+          <div
+            class="w-32 border-2"
+            v-for="snap in filtredSnapshots(currency)"
+            :key="snap"
+          >
+            Price: {{ snap.price }} date: {{ snap.date }}
+          </div>
+          <button @click.stop="snapshot(currency)" class="w-16">
+            snapshot
+          </button>
           <button @click.stop="deleteFromStore(currency)" class="w-16">
             delete
           </button>
