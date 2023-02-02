@@ -1,11 +1,13 @@
 <script setup>
-import { reactive, ref } from "vue";
-import { updateCurrencyPrices } from "./api.js";
+import { reactive, ref, onMounted } from "vue";
+import { updateCurrencyPrices, fetchCryptoCurrency } from "./api.js";
+import inputCurrency from "./test.vue";
 const counter = ref(0);
 const currency1 = ref("");
 const currency2 = ref("");
 const currencyStore = ref([]);
 const snapshots = ref([]);
+const coinNameList = ref();
 
 function normalizedDate() {
   const date = new Date();
@@ -50,20 +52,19 @@ function filtredSnapshots(currency) {
       snapshoted.name1 == currency.name1 && snapshoted.name2 == currency.name2
   );
 }
+onMounted(() => {
+  fetchCryptoCurrency(coinNameList);
+});
 </script>
 
 <template>
   <div class="container bg-slate-300">
     <header class="bg-red-500 flex flex-col text-white">
       <h1>Custom Crypto Currency</h1>
-      <label>currency 1 </label
-      ><input class="text-black" v-model="currency1" />
-      <label>currency 2 </label
-      ><input
-        @keydown.enter="addToStore()"
-        class="text-black"
-        v-model="currency2"
-      />
+
+      <label>currency 1 </label><inputCurrency />
+      <label>currency 2 </label>
+      <inputCurrency @keydown.enter="addToStore()" />
       <button @click="addToStore()">add</button>
     </header>
     <main class="container">

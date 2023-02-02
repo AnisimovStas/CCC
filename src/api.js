@@ -16,4 +16,12 @@ export function updateCurrencyPrices(currencyName1, currencyName2) {
   this.currency2 = "";
 }
 
-export function loadCurrencyList() {}
+export async function fetchCryptoCurrency(container) {
+  const response = await fetch(
+    "https://min-api.cryptocompare.com/data/all/coinlist?summary=true"
+  );
+  const currenciesNotТormalized = await response.json();
+  const currencies = Object.keys(currenciesNotТormalized.Data);
+
+  container.value = currencies;
+}
