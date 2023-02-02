@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, onMounted } from "vue";
 import { updateCurrencyPrices, fetchCryptoCurrency } from "./api.js";
-import inputCurrency from "./test.vue";
+import inputCurrency from "./customInput.vue";
 const counter = ref(0);
 const currency1 = ref("");
 const currency2 = ref("");
