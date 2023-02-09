@@ -4,6 +4,7 @@ const isActive = ref(true);
 const currency = ref("");
 const suggestions = ref([]);
 const filtered = ref([]);
+// Написать пропсы и эмиты для импута
 
 async function fetchCryptoCurrencies() {
   const response = await fetch(
@@ -40,18 +41,16 @@ function onSelect(selectedCurrency) {
 }
 </script>
 <template>
-  <div class="w-64 text-black">
+  <div class="w-screen">
     <input
-      class="border border-gray-400 rounded-lg p-2"
       type="text"
       v-model="currency"
+      placeholder="Type Currency here"
+      class="w-screen"
     />
-    <ul
-      v-if="isActive"
-      class="absolute bg-white border-2 border-black rounded-lg"
-    >
+    <ul v-if="isActive" class="absolute">
       <li
-        v-for="suggestion in filtered.splice(0, 8)"
+        v-for="suggestion in filtered.splice(0, 6)"
         :key="suggestion"
         class="p-2 hover:bg-green-500 border border-gray-400"
         @click="onSelect(suggestion)"

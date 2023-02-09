@@ -1,4 +1,6 @@
 <script setup>
+// проблемы:
+// Если были снапшоты, но их удалили, остается меню, добавить вотчер который убирает это
 import { reactive, ref, onMounted } from "vue";
 import { updateCurrencyPrices, fetchCryptoCurrency } from "./api.js";
 import inputCurrency from "./customInput.vue";
@@ -20,6 +22,7 @@ async function addToStore() {
     name1: this.currency1.toUpperCase(),
     name2: this.currency2.toUpperCase(),
     price: "-",
+    open: false,
   };
   this.currencyStore = [...this.currencyStore, currentCurrencyToStore];
   this.updateCurrencyPrices(
@@ -27,6 +30,7 @@ async function addToStore() {
     currentCurrencyToStore.name2
   );
 }
+
 function deleteFromStore(currencyToRemove) {
   this.currencyStore = this.currencyStore.filter(
     (currency) => currency != currencyToRemove
@@ -58,46 +62,71 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container bg-slate-300">
-    <header class="bg-red-500 flex flex-col text-white">
-      <h1>Custom Crypto Currency</h1>
+  <div class="container bg-green-500">
+    <header class="bg-red-500 flex flex-col text-black justify-center">
+      <h1 class="text-white text-3xl text-center">Custom Crypto Currency</h1>
 
-      <label>currency 1 </label><inputCurrency />
+      <label>currency 1 </label
+      ><input
+        type="text"
+        v-model="currency1"
+        placeholder="Type Currency here"
+        class="w-screen"
+      />
       <label>currency 2 </label>
-      <inputCurrency @keydown.enter="addToStore()" />
+      <input
+        type="text"
+        v-model="currency2"
+        placeholder="Type Currency here"
+        class="w-screen"
+      />
       <button @click="addToStore()">add</button>
     </header>
     <main class="container">
       <div v-if="currencyStore != ''" class="flex flex-col">
-        <div class="flex flex-row space-x-2">
-          <div class="w-16">Name1</div>
-          <div class="w-16">Name2</div>
-          <div class="w-16">Price</div>
-        </div>
-
         <div
-          class="flex flex-row space-x-2"
+          class="flex flex-col space-x-2"
           v-for="currency in currencyStore"
           :key="currency"
         >
-          <div class="w-16 border-2">{{ currency.name1 }}</div>
-          <div class="w-16 border-2">{{ currency.name2 }}</div>
-          <div class="w-16 border-2">{{ currency.price }}</div>
-          <div
-            class="flex-col w-32 border-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:bg-red-600 duration-300"
-            v-for="snap in filtredSnapshots(currency)"
-            :key="snap"
-            @click="deleteSnapshot(snap)"
-          >
-            <p>Price: {{ snap.price }}</p>
-            <p>date: {{ snap.date }}</p>
+          <div class="flex flex-row">
+            <div class="w-20 border-2">{{ currency.name1 }}</div>
+            <p class="w-20 border-2">/</p>
+            <div class="w-20 border-2">{{ currency.name2 }}</div>
+            <div class="w-20 border-2">{{ currency.price }}</div>
+
+            <div class="w-20 border-2" @click.stop="snapshot(currency)">
+              take snapshot
+            </div>
+
+            <div class="w-20 border-2" @click="currency.open = !currency.open">
+              Open / close
+            </div>
+            <div class="w-20 border-2" @click.stop="deleteFromStore(currency)">
+              delete
+            </div>
           </div>
-          <button @click.stop="snapshot(currency)" class="w-16">
-            take snapshot
-          </button>
-          <button @click.stop="deleteFromStore(currency)" class="w-16">
-            delete
-          </button>
+          <div v-show="currency.open" class="flex flex-col bg-blue-500">
+            <div class="flex flex-row space-x-4">
+              <p class="w-20 border-2">Date</p>
+              <p class="w-20 border-2">Price at date shapshot</p>
+              <p class="w-20 border-2">%</p>
+            </div>
+            <div
+              class="flex flex-row w-screen space-x-4"
+              v-for="snap in filtredSnapshots(currency)"
+              :key="snap"
+            >
+              <p class="w-20 border-2">{{ snap.date }}</p>
+              <p class="w-20 border-2">{{ snap.price }}</p>
+              <p class="w-20 border-2">
+                difference in % {{ (currency.price / snap.price) * 100 }}
+              </p>
+              <p class="w-20 border-2" @click="deleteSnapshot(snap)">
+                delete snap
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </main>
