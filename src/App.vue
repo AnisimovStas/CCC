@@ -2,14 +2,11 @@
 // проблемы:
 // Если были снапшоты, но их удалили, остается меню, добавить вотчер который убирает это
 import { reactive, ref, onMounted } from "vue";
-import { updateCurrencyPrices, fetchCryptoCurrency } from "./api.js";
-import inputCurrency from "./customInput.vue";
+import { updateCurrencyPrice, } from "./api.js";
+import AddCurrency from "./components/AddingCurrency.vue";
 const counter = ref(0);
-const currency1 = ref("");
-const currency2 = ref("");
 const currencyStore = ref([]);
 const snapshots = ref([]);
-const coinNameList = ref();
 
 function normalizedDate() {
   const date = new Date();
@@ -17,19 +14,17 @@ function normalizedDate() {
   const normalizedDate = date.toLocaleDateString(undefined, options);
   return normalizedDate;
 }
-async function addToStore() {
-  const currentCurrencyToStore = {
-    name1: this.currency1.toUpperCase(),
-    name2: this.currency2.toUpperCase(),
-    price: "-",
-    open: false,
-  };
-  this.currencyStore = [...this.currencyStore, currentCurrencyToStore];
-  this.updateCurrencyPrices(
-    currentCurrencyToStore.name1,
-    currentCurrencyToStore.name2
-  );
+function addToStore(currency) {
+  console.log(currency);
+  currencyStore.value = [...currencyStore.value, currency];
 }
+
+setInterval(async () => {
+  currencyStore.value.forEach(
+    async (currency) => await updateCurrencyPrice(currency)
+  );
+  console.log("heey");
+}, 5000);
 
 function deleteFromStore(currencyToRemove) {
   this.currencyStore = this.currencyStore.filter(
@@ -56,30 +51,16 @@ function filtredSnapshots(currency) {
       snapshoted.name1 == currency.name1 && snapshoted.name2 == currency.name2
   );
 }
-onMounted(() => {
-  fetchCryptoCurrency(coinNameList);
-});
 </script>
 
 <template>
+  <AddCurrency @addCurrencyToArray="addToStore" />
+  <br /><br /><br /><br /><br /><br /><br />
   <div class="container bg-green-500">
     <header class="bg-red-500 flex flex-col text-black justify-center">
       <h1 class="text-white text-3xl text-center">Custom Crypto Currency</h1>
 
-      <label>currency 1 </label
-      ><input
-        type="text"
-        v-model="currency1"
-        placeholder="Type Currency here"
-        class="w-screen"
-      />
-      <label>currency 2 </label>
-      <input
-        type="text"
-        v-model="currency2"
-        placeholder="Type Currency here"
-        class="w-screen"
-      />
+      <br /><br /><br /><br /><br /><br /><br />
       <button @click="addToStore()">add</button>
     </header>
     <main class="container">
