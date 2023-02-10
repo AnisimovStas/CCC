@@ -17,20 +17,20 @@ function add(currency1, currency2) {
 }
 </script>
 <template>
-  <div class="bg-violet-600">
-    <div>
-      <h1 class="text-white text-3xl font-bold text-center">
+  <div class="container bg-white rounded-lg">
+    <div class="flex justify-center py-3">
+      <h1 class="text-gray-900 text-2xl font-bold w-full lg:w-1/3 text-center">
         Custom Crypto Currency
       </h1>
     </div>
-    <div class="space-y-4">
+    <div class="mx-20">
       <!--Currency #1-->
-      <div class="w-screen">
+      <div class="">
         <input
           type="text"
           v-model="crypto1"
           placeholder="Type Currency here"
-          class="w-screen h-10"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <ul v-if="false" class="absolute">
           <li
@@ -45,12 +45,12 @@ function add(currency1, currency2) {
       </div>
       <br />
       <!--Currency #2-->
-      <div class="w-screen">
+      <div class="">
         <input
           type="text"
           v-model="crypto2"
           placeholder="Type Currency here"
-          class="w-screen h-10"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <ul v-if="false" class="absolute">
           <li
@@ -65,10 +65,10 @@ function add(currency1, currency2) {
       </div>
     </div>
     <!-- Add Button-->
-    <div class="flex justify-center">
+    <div class="flex justify-center m-3">
       <button
         @click="add(crypto1, crypto2)"
-        class="text-white text-3xl h-full w-full font-bold"
+        class="text-white bg-gray-800 w-36 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
       >
         Add
       </button>
