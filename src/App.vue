@@ -23,9 +23,14 @@ setInterval(async () => {
   currencyStore.value.forEach(
     async (currency) => await updateCurrencyPrice(currency)
   );
-  console.log("heey");
 }, 5000);
 
+function formatPrice(price) {
+  if (!price || typeof price !== "number") {
+    return (price = "-");
+  }
+  return price > 1 ? price.toFixed(2) : price.toPrecision(2);
+}
 function deleteFromStore(currencyToRemove) {
   this.currencyStore = this.currencyStore.filter(
     (currency) => currency != currencyToRemove
@@ -58,56 +63,80 @@ function filtredSnapshots(currency) {
     <div class="container m-auto p-7">
       <AddCurrency @addCurrencyToArray="addToStore" />
 
-      <div class="bg-violet-400 w-full container m-auto">
+      <div class="bg-white rounded-lg">
         <main class="w-full items-center flex justify-center">
-          <div v-if="currencyStore != ''" class="flex flex-col justify-center">
+          <div
+            v-if="currencyStore != ''"
+            class="flex flex-col justify-center w-full"
+          >
             <div
-              class="flex flex-col justify-between space-x-2"
+              class="flex flex-col"
               v-for="currency in currencyStore"
               :key="currency"
             >
-              <div class="flex flex-row">
-                <div class="w-20 border-2">{{ currency.name1 }}</div>
-                <p class="w-20 border-2">/</p>
-                <div class="w-20 border-2">{{ currency.name2 }}</div>
-                <div class="w-20 border-2">{{ currency.price }}</div>
-
-                <div class="w-20 border-2" @click.stop="snapshot(currency)">
-                  take snapshot
+              <div
+                class="flex justify-between mx-7 items-center border-b border-black"
+              >
+                <div class="flex flex-row justify-start">
+                  <div class="border-r-2 border-black pr-1">
+                    {{ currency.name1 }}
+                  </div>
+                  <div class="pl-1">
+                    {{ currency.name2 }}
+                  </div>
                 </div>
-
-                <div
-                  class="w-20 border-2"
-                  @click="currency.open = !currency.open"
-                >
-                  Open / close
+                <div class="flex justify-center">
+                  {{ formatPrice(currency.price) }}
                 </div>
                 <div
-                  class="w-20 border-2"
-                  @click.stop="deleteFromStore(currency)"
+                  class="flex flex-row justify-end space-x-1 h-10 items-center"
                 >
-                  delete
+                  <div
+                    class="hover:border border-black hover: rounded-lg p-1"
+                    @click.stop="snapshot(currency)"
+                  >
+                    <img src="./assets/snapshot.svg" class="w-7 h-7" />
+                  </div>
+
+                  <div
+                    :class="{
+                      'flex justify-center rotate-180  hover:border border-black hover: rounded-lg p-1':
+                        !currency.open,
+                      '  hover:border border-black hover: rounded-lg p-1':
+                        currency.open,
+                    }"
+                    @click="currency.open = !currency.open"
+                  >
+                    <img src="./assets/arrow.svg" class="w-7 h-7" />
+                  </div>
+                  <div
+                    class="hover:border border-black hover: rounded-lg p-1"
+                    @click.stop="deleteFromStore(currency)"
+                  >
+                    <img src="./assets/delete.svg" class="w-7 h-7" />
+                  </div>
                 </div>
               </div>
-              <div v-show="currency.open" class="flex flex-col bg-blue-500">
-                <div class="flex flex-row space-x-4">
-                  <p class="w-20 border-2">Date</p>
-                  <p class="w-20 border-2">Price at date shapshot</p>
-                  <p class="w-20 border-2">%</p>
-                </div>
+              <div
+                v-show="currency.open"
+                class="flex flex-col bg-gray-800 text-gray-50"
+              >
                 <div
-                  class="flex flex-row w-screen space-x-4"
+                  class="flex flex-row justify-between mx-7 space-x-4 h-10 border-gray-50 border-b"
                   v-for="snap in filtredSnapshots(currency)"
                   :key="snap"
                 >
-                  <p class="w-20 border-2">{{ snap.date }}</p>
-                  <p class="w-20 border-2">{{ snap.price }}</p>
-                  <p class="w-20 border-2">
-                    difference in % {{ (currency.price / snap.price) * 100 }}
+                  <p class="">{{ snap.date }}</p>
+                  <p class="">{{ formatPrice(snap.price) }}</p>
+                  <p class="">
+                    {{ (currency.price / snap.price).toPrecision(2) - 1 + "%" }}
                   </p>
-                  <p class="w-20 border-2" @click="deleteSnapshot(snap)">
-                    delete snap
-                  </p>
+                  <div
+                    class="hover:border border-gray-50 hover: rounded-lg p-1"
+                    @click="deleteSnapshot(snap)"
+                  >
+                    <img src="./assets/delete-w.svg" class="w-7 h-7" />
+                  </div>
                 </div>
               </div>
             </div>

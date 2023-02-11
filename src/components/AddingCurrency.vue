@@ -18,14 +18,14 @@ function add(currency1, currency2) {
 </script>
 <template>
   <div class="container bg-white rounded-lg">
-    <div class="flex justify-center py-3">
+    <div class="flex justify-center py-2">
       <h1 class="text-gray-900 text-2xl font-bold w-full lg:w-1/3 text-center">
         Custom Crypto Currency
       </h1>
     </div>
-    <div class="mx-20">
+    <div class="mx-7">
       <!--Currency #1-->
-      <div class="">
+      <div class="my-4">
         <input
           type="text"
           v-model="crypto1"
@@ -43,9 +43,8 @@ function add(currency1, currency2) {
           </li>
         </ul>
       </div>
-      <br />
       <!--Currency #2-->
-      <div class="">
+      <div class="my-4">
         <input
           type="text"
           v-model="crypto2"
