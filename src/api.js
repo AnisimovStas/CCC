@@ -1,9 +1,9 @@
 const API_KEY =
-  "85d4964e83d6e54ba4a126a258e47674a81e1f9be1b18b900757e96652e4ec5a";
+  "f5b01dd8d28b2e98a872d600f41195821853b82f469cf98c9a01dffeb7db2c91";
 
 export async function updateCurrencyPrice(currency) {
   const f = await fetch(
-    `https://min-api.cryptocompare.com/data/price?fsym=${currency.name1}&tsyms=${currency.name2}`
+    `https://min-api.cryptocompare.com/data/price?fsym=${currency.name1}&tsyms=${currency.name2}&api_key=${API_KEY}`
   );
   const Newprice = await f.json();
 
