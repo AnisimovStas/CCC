@@ -1,7 +1,7 @@
 <script setup>
 // проблемы:
 // Если были снапшоты, но их удалили, остается меню, добавить вотчер который убирает это
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, watch } from "vue";
 import { updateCurrencyPrice } from "./api.js";
 import AddCurrency from "./components/AddingCurrency.vue";
 const counter = ref(0);
@@ -56,6 +56,32 @@ function filtredSnapshots(currency) {
       snapshoted.name1 == currency.name1 && snapshoted.name2 == currency.name2
   );
 }
+
+function setToLocalStorageCurrency() {
+  localStorage.setItem("Currencies-list", JSON.stringify(currencyStore.value));
+}
+function setToLocalStorageSnap() {
+  localStorage.setItem("Snap-list", JSON.stringify(snapshots.value));
+}
+function loadFromLocalStorageCurrency() {
+  const currenciesData = localStorage.getItem("Currencies-list");
+
+  if (currenciesData) {
+    currencyStore.value = JSON.parse(currenciesData);
+  }
+}
+function loadFromLocalStorageSnap() {
+  const snapData = localStorage.getItem("Snap-list");
+
+  if (snapData) {
+    snapshots.value = JSON.parse(snapData);
+  }
+}
+onMounted(loadFromLocalStorageCurrency);
+onMounted(loadFromLocalStorageSnap);
+
+watch(currencyStore, setToLocalStorageCurrency);
+watch(snapshots, setToLocalStorageSnap);
 </script>
 
 <template>
