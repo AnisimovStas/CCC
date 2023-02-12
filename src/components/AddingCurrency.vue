@@ -1,9 +1,16 @@
 <script setup>
 import { ref, onMounted, watch, defineEmits } from "vue";
+import { fetchCryptoCurrencies } from "./../api.js";
 const crypto1 = ref("");
 const crypto2 = ref("");
 const emit = defineEmits(["addCurrencyToArray"]);
+const cryptoList = ref([]);
+const suggestion1 = ref([]);
+const suggestion2 = ref([]);
 
+onMounted(async () => {
+  cryptoList.value = await fetchCryptoCurrencies();
+});
 function add(currency1, currency2) {
   const currency = {
     name1: currency1.toUpperCase(),
@@ -15,6 +22,26 @@ function add(currency1, currency2) {
   crypto1.value = "";
   crypto2.value = "";
 }
+function firstSuggest(suggestion) {
+  crypto1.value = suggestion;
+  suggestion1.value = crypto1.value;
+}
+function secondSuggest(suggestion) {
+  crypto2.value = suggestion;
+  suggestion2.value = crypto2.value;
+}
+function suggestingForCrypto1(inputCrypto) {
+  suggestion1.value = cryptoList.value.filter((crypto) =>
+    crypto.startsWith(inputCrypto.toUpperCase())
+  );
+}
+function suggestingForCrypto2(inputCrypto) {
+  suggestion2.value = cryptoList.value.filter((crypto) =>
+    crypto.startsWith(inputCrypto.toUpperCase())
+  );
+}
+watch(crypto1, suggestingForCrypto1);
+watch(crypto2, suggestingForCrypto2);
 </script>
 <template>
   <div class="container bg-white rounded-lg">
@@ -32,12 +59,15 @@ function add(currency1, currency2) {
           placeholder="Type Currency here"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
-        <ul v-if="false" class="absolute">
+        <ul
+          v-if="suggestion1.length > 2 && suggestion1.length < 50"
+          class="absolute container w-96"
+        >
           <li
-            v-for="suggestion in filtered.splice(0, 6)"
+            v-for="suggestion in suggestion1"
             :key="suggestion"
-            class="p-2 hover:bg-green-500 border border-gray-400"
-            @click="onSelect(suggestion)"
+            class="bg-gray-50 border border-gray-300 hover:bg-gray-50 hover:text-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            @click="firstSuggest(suggestion)"
           >
             {{ suggestion }}
           </li>
@@ -52,12 +82,15 @@ function add(currency1, currency2) {
           @keydown.enter="add(crypto1, crypto2)"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
-        <ul v-if="false" class="absolute">
+        <ul
+          v-if="suggestion2.length > 2 && suggestion2.length < 50"
+          class="absolute"
+        >
           <li
-            v-for="suggestion in filtered.splice(0, 6)"
+            v-for="suggestion in suggestion2"
             :key="suggestion"
-            class="p-2 hover:bg-green-500 border border-gray-400"
-            @click="onSelect(suggestion)"
+            class="bg-gray-50 border border-gray-300 hover:bg-gray-50 hover:text-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            @click="secondSuggest(suggestion)"
           >
             {{ suggestion }}
           </li>

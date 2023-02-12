@@ -11,11 +11,11 @@ export async function updateCurrencyPrice(currency) {
 }
 
 export async function fetchCryptoCurrencies() {
-  const response = await fetch(
-    "https://min-api.cryptocompare.com/data/all/coinlist?summary=true"
-  );
+  const response = await fetch("https://api.coincap.io/v2/assets");
   const currenciesNotТormalized = await response.json();
-  const currencies = Object.keys(currenciesNotТormalized.Data);
+  const currencies = currenciesNotТormalized.data;
+  const symbols = [];
+  currencies.forEach((crypto) => symbols.push(crypto.symbol));
 
-  return currencies;
+  return symbols;
 }
