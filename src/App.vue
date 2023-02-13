@@ -85,7 +85,7 @@ watch(snapshots, setToLocalStorageSnap);
 </script>
 
 <template>
-  <div class="bg-slate-100 h-screen">
+  <div class="bg-gray-100 h-screen">
     <div class="container m-auto p-7">
       <AddCurrency @addCurrencyToArray="addToStore" />
 
