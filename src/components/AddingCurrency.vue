@@ -66,7 +66,7 @@ watch(crypto2, suggestingForCrypto2);
           <li
             v-for="suggestion in suggestion1"
             :key="suggestion"
-            class="bg-gray-50 border border-gray-300 hover:bg-gray-50 hover:text-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-50 border border-gray-300 hover:bg-gray-100 hover:text-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             @click="firstSuggest(suggestion)"
           >
             {{ suggestion }}
@@ -84,12 +84,12 @@ watch(crypto2, suggestingForCrypto2);
         />
         <ul
           v-if="suggestion2.length > 2 && suggestion2.length < 50"
-          class="absolute"
+          class="absolute w-96"
         >
           <li
             v-for="suggestion in suggestion2"
             :key="suggestion"
-            class="bg-gray-50 border border-gray-300 hover:bg-gray-50 hover:text-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="bg-gray-50 border border-gray-300 hover:bg-gray-100 hover:text-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             @click="secondSuggest(suggestion)"
           >
             {{ suggestion }}

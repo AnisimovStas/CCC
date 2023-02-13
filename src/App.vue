@@ -148,15 +148,31 @@ watch(snapshots, setToLocalStorageSnap);
                 class="flex flex-col bg-gray-800 text-gray-50"
               >
                 <div
-                  class="flex flex-row justify-between mx-7 space-x-4 h-10 border-gray-50 border-b"
+                  class="flex flex-row justify-between mx-7 space-x-4 h-10 border-gray-50 border-b items-center"
                   v-for="snap in filtredSnapshots(currency)"
                   :key="snap"
                 >
                   <p class="">{{ snap.date }}</p>
                   <p class="">{{ formatPrice(snap.price) }}</p>
-                  <p class="">
-                    {{ (currency.price / snap.price).toPrecision(2) - 1 + "%" }}
-                  </p>
+                  <div class="flex flex-row">
+                    <p class="">
+                      {{
+                        ((currency.price / snap.price - 1) * 100).toPrecision(
+                          2
+                        ) + "%"
+                      }}
+                    </p>
+                    <img
+                      v-show="currency.price / snap.price > 1"
+                      src="./assets/priceArrowUP.svg"
+                      class="w-7 h-7"
+                    />
+                    <img
+                      v-show="currency.price / snap.price < 1"
+                      src="./assets/priceArrowDown.svg"
+                      class="w-7 h-7"
+                    />
+                  </div>
                   <div
                     class="hover:border border-gray-50 hover: rounded-lg p-1"
                     @click="deleteSnapshot(snap)"
