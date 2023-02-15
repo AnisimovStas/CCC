@@ -6,21 +6,39 @@ const crypto1 = ref("");
 const crypto2 = ref("");
 const cryptoList = ref([]);
 const emit = defineEmits({ addCurrencyToArray: null });
+const emptyField1 = ref(false);
+const emptyField2 = ref(false);
 
 onMounted(async () => {
   cryptoList.value = await fetchCryptoCurrencies();
 });
 function add(currency1, currency2) {
-  const currency = {
-    name1: currency1.toUpperCase(),
-    name2: currency2.toUpperCase(),
-    price: "-",
-    Open: false,
-  };
-  emit("addCurrencyToArray", currency);
-  crypto1.value = "";
-  crypto2.value = "";
+  if (currency1 != "" && currency2 != "") {
+    const currency = {
+      name1: currency1.toUpperCase(),
+      name2: currency2.toUpperCase(),
+      price: "-",
+      Open: false,
+    };
+    emit("addCurrencyToArray", currency);
+    crypto1.value = "";
+    crypto2.value = "";
+  }
+  if (currency1 == "") {
+    emptyField1.value = !emptyField1.value;
+    console.log(emptyField1.value);
+  }
+  if (currency2 == "") {
+    emptyField2.value = !emptyField2.value;
+    console.log(emptyField2.value);
+  }
 }
+watch(crypto1, () => {
+  emptyField1.value = false;
+});
+watch(crypto2, () => {
+  emptyField2.value = false;
+});
 </script>
 <template>
   <div class="container bg-white rounded-lg">
@@ -29,6 +47,7 @@ function add(currency1, currency2) {
         Custom Crypto Currency
       </h1>
     </div>
+    <!-- <div class="shake">test text</div>-->
     <div class="mx-7">
       <!--Currency #1-->
       <div class="my-4">
@@ -36,6 +55,7 @@ function add(currency1, currency2) {
           type="text"
           v-model="crypto1"
           placeholder="Type Currency here"
+          :class="{ 'shake placeholder:text-red-500': emptyField1 }"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
 
@@ -51,6 +71,7 @@ function add(currency1, currency2) {
           v-model="crypto2"
           placeholder="Type Currency here"
           @keydown.enter="add(crypto1, crypto2)"
+          :class="{ 'shake  placeholder:text-red-500': emptyField2 }"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
         <suggestingCrypto
