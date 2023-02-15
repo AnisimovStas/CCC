@@ -26,19 +26,13 @@ function add(currency1, currency2) {
   }
   if (currency1 == "") {
     emptyField1.value = !emptyField1.value;
-    console.log(emptyField1.value);
+    setTimeout(() => (emptyField1.value = !emptyField1.value), 1000);
   }
   if (currency2 == "") {
     emptyField2.value = !emptyField2.value;
-    console.log(emptyField2.value);
+    setTimeout(() => (emptyField2.value = !emptyField2.value), 1000);
   }
 }
-watch(crypto1, () => {
-  emptyField1.value = false;
-});
-watch(crypto2, () => {
-  emptyField2.value = false;
-});
 </script>
 <template>
   <div class="container bg-white rounded-lg">
