@@ -4,7 +4,6 @@
 import { reactive, ref, onMounted, watch } from "vue";
 import { updateCurrencyPrice } from "./api.js";
 import AddCurrency from "./components/AddingCurrency.vue";
-const counter = ref(0);
 const currencyStore = ref([]);
 const snapshots = ref([]);
 
