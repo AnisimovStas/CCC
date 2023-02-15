@@ -19,9 +19,12 @@ function sendToParrent(suggestion) {
   console.log(suggestion);
   emit("addCurrencyInInput", suggestion);
 }
+watch(
+  () => props.inputCurrency,
+  (newValue) => suggestingForCrypto(newValue)
+);
 </script>
 <template>
-  {{ suggestingForCrypto(inputCurrency) }}
   <ul
     v-if="suggestions.length > 2 && suggestions.length < 50"
     class="absolute container w-96"
