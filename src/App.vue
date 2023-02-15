@@ -32,12 +32,12 @@ function formatPrice(price) {
   return price > 1 ? price.toFixed(2) : price.toPrecision(2);
 }
 function deleteFromStore(currencyToRemove) {
-  this.currencyStore = this.currencyStore.filter(
+  currencyStore.value = currencyStore.value.filter(
     (currency) => currency != currencyToRemove
   );
 }
 function deleteSnapshot(snapshotToRemove) {
-  this.snapshots = this.snapshots.filter(
+  snapshots.value = snapshots.value.filter(
     (snapshot) => snapshot != snapshotToRemove
   );
 }
@@ -48,10 +48,10 @@ function snapshot(currencyToSnapshot) {
     price: currencyToSnapshot.price,
     date: normalizedDate(),
   };
-  this.snapshots = [...this.snapshots, snapshotedCurrency];
+  snapshots.value = [...snapshots.value, snapshotedCurrency];
 }
 function filtredSnapshots(currency) {
-  return this.snapshots.filter(
+  return snapshots.value.filter(
     (snapshoted) =>
       snapshoted.name1 == currency.name1 && snapshoted.name2 == currency.name2
   );
