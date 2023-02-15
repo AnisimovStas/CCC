@@ -1,7 +1,8 @@
-# Vue 3 + Vite
+#Custom crypto currency
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This web app was created to simplify crypto currencies trades between themselfs.
 
-## Recommended IDE Setup
+There allow you select 2 crypto currencies (with dropdown autohelp for top 100 currencies) and calculate thier price. 
+Also you able to take shapshot of currentprice and add it to history table that's show difference in percent.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Hope it's will help to earn some or atleast lose less.
